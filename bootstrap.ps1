@@ -7,15 +7,16 @@ function CheckIfSystemIsWindows {
 
   if ($OsName.ToLower().Contains("windows")) {
     return $true
-  } else {
+  }
+  else {
     return $false
   }
 }
 
 function Confirm-Prompt {
   param (
-      [string]$Message,
-      [int]$Default = 0
+    [string]$Message,
+    [int]$Default = 0
   )
 
   $choices = '&Yes', '&No'
@@ -23,7 +24,8 @@ function Confirm-Prompt {
 
   if ($decision -eq 0) {
     return $true
-  } else {
+  }
+  else {
     return $false
   }
 }
@@ -76,7 +78,8 @@ $OmpThemeFileSource = Select-Prompt -Title $null -Question "How you want to appl
 if ($OmpThemeFileSource -eq 0) {
   $env:ZetaOmpThemePath = "https://gist.githubusercontent.com/freitaseric/6ab2412223ab3931753c4659c380c015/raw/52b8f8221d140a3bf6318113697b963d287acc2f/zeta-theme.omp.json"
   Write-Host "The OMP theme file has been setted to Github Gist URL." -ForegroundColor Green
-} else {
+}
+else {
   if (Test-Path "$env:USERPROFILE\Documents\.dotfiles") {
     Remove-Item "$env:USERPROFILE\Documents\.dotfiles" -Force -Recurse
   }
@@ -107,19 +110,7 @@ Write-Host "The OMP theme has been setted in your PowerShell profile." -Foregrou
 # WSL Setup
 Write-Host "Starting the WSL setup with Arch Linux" -ForegroundColor Cyan
 
-wsl.exe --install -d "Ubuntu"
+wsl.exe --install
 
-$PostInstallScriptContent = Invoke-WebRequest -Uri "https://raw.githubusercontent.com/freitaseric/dotfiles/main/windows/post_install.ps1" | Select-Object -ExpandProperty Content
-$PostInstallScriptBlock = [ScriptBlock]::Create($PostInstallScriptContent)
-
-$TaskAction = New-ScheduledTaskAction -Execute { Invoke-Command -ScriptBlock $PostInstallScriptBlock }
-$TaskTrigger = New-ScheduledTaskTrigger -Once -At Get-Date
-
-$ConfirmRestart = Confirm-Prompt -Message "Do you want to restart your system to apply all configurations?"
-if ($ConfirmRestart) {
-  Register-ScheduledTask -TaskName "DotFilesRestartSystem" -Trigger $TaskTrigger -Action $TaskAction
-} else {
-  Write-Host "The WSL has been completed configurated, but you need to restart your system to continue the setup." -ForegroundColor Yellow
-  Write-Host "You can to restart your system manually, then run the post install script located on this github repository https://github.com/freitaseric/dotfiles" -ForegroundColor Yellow
-  Exit 0
-}
+Write-Host "The WSL has been completed configurated, but you need to restart your system to continue the setup." -ForegroundColor Yellow
+Write-Host "You need to restart your system manually, then run the post install script located on this github repository https://github.com/freitaseric/dotfiles" -ForegroundColor Yellow
