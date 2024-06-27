@@ -1,0 +1,148 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "palette": {
+    "os": "#ACB0BE",
+    "closer": "p:os",
+    "pink": "#F5BDE6",
+    "lavender": "#B7BDF8",
+    "blue": "#8AADF4"
+  },
+  "blocks": [
+    {
+      "alignment": "left",
+      "type": "prompt",
+      "segments": [
+        {
+          "type": "text",
+          "style": "diamond",
+          "leading_diamond": "\ue0b6",
+          "background": "#1bd760",
+          "foreground": "#000",
+          "template": "\uf1bc "
+        },
+        {
+          "type": "spotify",
+          "style": "diamond",
+          "trailing_diamond": "\ue0b4",
+          "background": "#1BD760",
+          "foreground": "#000",
+          "template": "{{ if ne .Status \"stopped\" }} {{ .Track }}{{ end }}",
+          "properties": {
+            "playing_icon": "\uf04b ",
+            "paused_icon": "\uf04b ",
+            "stopped_icon": "\uf04b "
+          }
+        }
+      ]
+    },
+    {
+      "alignment": "left",
+      "type": "prompt",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "p:os",
+          "style": "plain",
+          "template": "{{.Icon}} ",
+          "type": "os"
+        },
+        {
+          "style": "plain",
+          "foreground": "p:closer",
+          "template": "\uf105 ",
+          "type": "text"
+        },
+        {
+          "foreground": "p:blue",
+          "properties": {
+            "home_icon": "~",
+            "style": "full"
+          },
+          "style": "plain",
+          "template": "{{ path .Path .Location }} ",
+          "type": "path"
+        }
+      ]
+    },
+    {
+      "alignment": "right",
+      "type": "prompt",
+      "segments": [
+        {
+          "foreground": "p:lavender",
+          "properties": {
+            "branch_icon": "\ue725 ",
+            "cherry_pick_icon": "\ue29b ",
+            "commit_icon": "\uf417 ",
+            "fetch_status": false,
+            "fetch_upstream_icon": false,
+            "merge_icon": "\ue727 ",
+            "no_commits_icon": "\uf0c3 ",
+            "rebase_icon": "\ue728 ",
+            "revert_icon": "\uf0e2 ",
+            "tag_icon": "\uf412 "
+          },
+          "template": "{{ .HEAD }} ",
+          "style": "plain",
+          "type": "git"
+        },
+        {
+          "foreground": "p:pink",
+          "properties": {
+            "style": "austin",
+            "threshold": 150
+          },
+          "style": "plain",
+          "template": "<p:closer>|</> \uf017 {{ .FormattedMs }}",
+          "type": "executiontime"
+        },
+        {
+          "foreground": "p:lavender",
+          "style": "plain",
+          "template": "<p:closer>|</> 🥟 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}",
+          "type": "bun"
+        },
+        {
+          "foreground": "p:lavender",
+          "style": "plain",
+          "template": "<p:closer>|</> \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }}",
+          "type": "node"
+        },
+        {
+          "foreground": "p:lavander",
+          "style": "plain",
+          "template": "<p:closer>|</> \ue738 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}",
+          "type": "java"
+        },
+        {
+          "foreground": "p:lavander",
+          "style": "plain",
+          "template": "<p:closer>|</> \ue73c {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }}",
+          "type": "python"
+        }
+      ]
+    },
+    {
+      "alignment": "left",
+      "type": "prompt",
+      "newline": true,
+      "segments": [
+        {
+          "newline": true,
+          "foreground": "p:pink",
+          "style": "plain",
+          "template": "{{ .UserName }} ",
+          "type": "session"
+        },
+        {
+          "style": "plain",
+          "foreground": "p:closer",
+          "template": "$",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "final_space": true,
+  "version": 2
+}
