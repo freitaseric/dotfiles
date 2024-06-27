@@ -13,20 +13,13 @@
       "type": "prompt",
       "segments": [
         {
-          "type": "text",
-          "style": "diamond",
-          "leading_diamond": "\ue0b6",
-          "background": "#1bd760",
-          "foreground": "#000",
-          "template": "\uf1bc "
-        },
-        {
           "type": "spotify",
           "style": "diamond",
+          "leading_diamond": "\ue0b6",
           "trailing_diamond": "\ue0b4",
           "background": "#1BD760",
           "foreground": "#000",
-          "template": "{{ if ne .Status \"stopped\" }} {{ .Track }}{{ end }}",
+          "template": "\uf1bc {{ if ne .Status \"stopped\" }} {{ .Track }}{{ end }}",
           "properties": {
             "playing_icon": "\uf04b ",
             "paused_icon": "\uf04b ",
