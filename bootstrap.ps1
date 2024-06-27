@@ -51,37 +51,37 @@ function Select-Prompt {
 Write-Host $BANNER -ForegroundColor Cyan
 
 Write-Host "Checking the system requirements..." -ForegroundColor DarkGreen
-# $IsWindows = $(CheckIfSystemIsWindows)
+$IsWindows = $(CheckIfSystemIsWindows)
 
 if ($IsWindows -eq $false) {
   Write-Host "We detected that you aren't using Windows!" -ForegroundColor Yellow
-  Write-Host "This script is only for Windows, but you can to run the script located in ./linux/bootstrap.sh to apply my WSL setup in your system." -ForegroundColor Yellow
+  Write-Host "This script is only for Windows, but you can to run the script located in linux/bootstrap.sh to apply my WSL setup in your system." -ForegroundColor Yellow
 
   Exit 0
 }
 
 # Windows Pre-Install
-
 .\windows\pre_install.ps1
 
 # Install dependencies (if necessary)
-if (-not ($Env:DotFiles_ProgramsToInstall.Length -eq 0)) {
+if (-not ($env:DotFiles_ProgramsToInstall.Length -eq 0)) {
   .\windows\install_deps.ps1
 }
 
 # Customizing dotfiles setup
-Write-Host "Starting customization setup"
+Write-Host "Starting customization setup" -ForegroundColor Cyan
 
 $OmpThemeFileSource = Select-Prompt -Title $null -Question "How you want to apply the OhMyPosh theme?" -Choices "Using Github Dist", "Using a local file"
 
 if ($OmpThemeFileSource -eq 0) {
-  $Env:ZetaOmpThemePath = "https://gist.githubusercontent.com/freitaseric/6ab2412223ab3931753c4659c380c015/raw/52b8f8221d140a3bf6318113697b963d287acc2f/zeta-theme.omp.json"
+  $env:ZetaOmpThemePath = "https://gist.githubusercontent.com/freitaseric/6ab2412223ab3931753c4659c380c015/raw/52b8f8221d140a3bf6318113697b963d287acc2f/zeta-theme.omp.json"
+  Write-Host "The OMP theme file has been setted to Github Gist URL." -ForegroundColor Green
 } else {
   if (Test-Path "$env:USERPROFILE\Documents\.dotfiles") {
     Remove-Item "$env:USERPROFILE\Documents\.dotfiles" -Force -Recurse
   }
   
-  git clone --depth=1 https://github.com/freitaseric/dotfiles.git $env:USERPROFILE\Documents\.dotfiles
+  git.exe clone --depth=1 https://github.com/freitaseric/dotfiles.git $env:USERPROFILE\Documents\.dotfiles
 
   if (-not (Test-Path "$env:USERPROFILE\Documents\OhMyPosh")) {
     New-Item -Path "$env:USERPROFILE\Documents\OhMyPosh" -ItemType Directory
@@ -89,8 +89,37 @@ if ($OmpThemeFileSource -eq 0) {
 
   Copy-Item -Path "$env:USERPROFILE\Documents\.dotfiles\assets\zeta-theme.omp.json" -Destination "$env:USERPROFILE\Documents\OhMyPosh\"
 
-  $Env:ZetaOmpThemePath = "$env:USERPROFILE\Documents\OhMyPosh\zeta-theme.omp.json"
+  $env:ZetaOmpThemePath = "$env:USERPROFILE\Documents\OhMyPosh\zeta-theme.omp.json"
+  Write-Host "The OMP theme file has been setted to local file path." -ForegroundColor Green
 }
 
-# agora eu tenho que fazer o script criar o arquivo de perfil do powershell e aplicar o tema do omp nele e por fim fazer o setup do WSL no windows.
-# também tenho que criar o script de setup do ambiente dentro do WSl
+Write-Host "Modifying your PowerShell profile" -ForegroundColor Cyan
+
+if (-not (Test-Path $PROFILE.CurrentUserCurrentHost)) {
+  New-Item -Path $PROFILE.CurrentUserCurrentHost -ItemType File
+}
+
+$OhMyPoshConfig = "oh-my-posh init pwsh --config $env:ZetaOmpThemePath | InvokeExpression"
+$OhMyPoshConfig | Out-File -FilePath $PROFILE.CurrentUserCurrentHost
+
+Write-Host "The OMP theme has been setted in your PowerShell profile." -ForegroundColor Green
+
+# WSL Setup
+Write-Host "Starting the WSL setup with Arch Linux" -ForegroundColor Cyan
+
+wsl.exe --install -d "Ubuntu"
+
+$PostInstallScriptContent = Invoke-WebRequest -Uri "https://raw.githubusercontent.com/freitaseric/dotfiles/main/windows/post_install.ps1" | Select-Object -ExpandProperty Content
+$PostInstallScriptBlock = [ScriptBlock]::Create($PostInstallScriptContent)
+
+$TaskAction = New-ScheduledTaskAction -Execute { Invoke-Command -ScriptBlock $PostInstallScriptBlock }
+$TaskTrigger = New-ScheduledTaskTrigger -Once -At Get-Date
+
+$ConfirmRestart = Confirm-Prompt -Message "Do you want to restart your system to apply all configurations?"
+if ($ConfirmRestart) {
+  Register-ScheduledTask -TaskName "DotFilesRestartSystem" -Trigger $TaskTrigger -Action $TaskAction
+} else {
+  Write-Host "The WSL has been completed configurated, but you need to restart your system to continue the setup." -ForegroundColor Yellow
+  Write-Host "You can to restart your system manually, then run the post install script located on this github repository https://github.com/freitaseric/dotfiles" -ForegroundColor Yellow
+  Exit 0
+}
