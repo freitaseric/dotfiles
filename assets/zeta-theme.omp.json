@@ -36,7 +36,7 @@
         {
           "foreground": "p:os",
           "style": "plain",
-          "template": "{{.Icon}} ",
+          "template": "{{ .Icon }} {{ if .WSL }}WSL{{ end }}",
           "type": "os"
         },
         {
