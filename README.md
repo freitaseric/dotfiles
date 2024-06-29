@@ -26,6 +26,14 @@ or install all manually
 
 ## Linux Setup
 
+To easily install the complete setup, simply run the startup script in any shell compatible with POSIX. ([./linux/bootstrap.sh](./linux/bootstrap.sh))
+
+```shell
+$ curl -s "https://raw.githubusercontent.com/freitaseric/dotfiles/main/linux/bootstrap.sh" | bash
+```
+
+or install all manually
+
 ### Terminal (Shell)
 
 1. Shell Interpreter: [Zsh](https://www.zsh.org)
