@@ -19,7 +19,7 @@
           "trailing_diamond": "\ue0b4",
           "background": "#1BD760",
           "foreground": "#000",
-          "template": "\uf1bc {{ if ne .Status \"stopped\" }} {{ .Track }}{{ end }}",
+          "template": "\uf1bc {{ if ne .Status \"stopped\" }} {{ .Track }}{{ end }} {{ .Icon }}",
           "properties": {
             "playing_icon": "\uf04b ",
             "paused_icon": "\uf04b ",
