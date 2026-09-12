@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+choice=$(printf '%s\n' \
+    "Bloquear" \
+    "Sair" \
+    "Reiniciar" \
+    "Desligar" \
+    | fuzzel --dmenu --prompt="Sistema › ")
+
+case "$choice" in
+    "Bloquear")
+        hyprlock
+        ;;
+    "Sair")
+        if command -v hyprshutdown >/dev/null 2>&1; then
+            hyprshutdown
+        else
+            hyprctl dispatch 'hl.dsp.exit()'
+        fi
+        ;;
+    "Reiniciar")
+        systemctl reboot
+        ;;
+    "Desligar")
+        systemctl poweroff
+        ;;
+esac

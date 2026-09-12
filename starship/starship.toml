@@ -1,0 +1,70 @@
+"$schema" = "https://starship.rs/config-schema.json"
+
+add_newline = false
+scan_timeout = 20
+command_timeout = 500
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$nodejs\
+$php\
+$python\
+$cmd_duration\
+$character"""
+
+[directory]
+format = "[$path]($style) "
+style = "bold fg:#5eead4"
+truncation_length = 3
+truncate_to_repo = false
+
+[git_branch]
+format = "[git:$branch]($style) "
+style = "fg:#929aa3"
+
+[git_status]
+format = "[$all_status$ahead_behind]($style) "
+style = "fg:#f59e0b"
+
+conflicted = "="
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?"
+stashed = "$"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "×"
+
+[cmd_duration]
+min_time = 2000
+format = "[$duration]($style) "
+style = "fg:#727b85"
+
+[character]
+success_symbol = "[❯](bold fg:#0f766e)"
+error_symbol = "[❯](bold fg:#ef4444)"
+vimcmd_symbol = "[❮](bold fg:#0f766e)"
+
+[nodejs]
+format = "[node $version]($style) "
+style = "fg:#6fbf73"
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
+
+[php]
+format = "[php $version]($style) "
+style = "fg:#c792ea"
+detect_files = ["composer.json", ".php-version"]
+
+[python]
+format = "[py $version]($style) "
+style = "fg:#e0b45a"
+detect_files = [
+    "pyproject.toml",
+    "requirements.txt",
+    ".python-version"
+]

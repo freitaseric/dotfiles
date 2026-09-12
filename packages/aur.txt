@@ -1,0 +1,4 @@
+# Não há equivalente oficial para estes itens. A variante -git já existia e
+# foi preservada porque fornece a seleção de pastas Papirus teal.
+bibata-cursor-theme
+papirus-folders-git

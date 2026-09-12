@@ -1,0 +1,104 @@
+@define-color bg #181b1e;
+@define-color surface #202429;
+@define-color surface2 #292e33;
+@define-color border #343a40;
+@define-color text #e6e9ed;
+@define-color muted #929aa3;
+@define-color accent #0f766e;
+@define-color danger #ef4444;
+
+* {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    color: @text;
+}
+
+.control-center {
+    background: @bg;
+    border: 1px solid @border;
+    border-radius: 6px;
+    padding: 8px;
+}
+
+.notification {
+    background: @surface;
+    border: 1px solid @border;
+    border-radius: 6px;
+    margin: 4px 0;
+    box-shadow: none;
+}
+
+.notification-content {
+    padding: 10px;
+}
+
+.summary {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.body {
+    color: @text;
+}
+
+.time {
+    color: @muted;
+    font-size: 11px;
+}
+
+.close-button {
+    background: @surface2;
+    color: @muted;
+    border-radius: 6px;
+}
+
+.close-button:hover {
+    background: @danger;
+    color: #ffffff;
+}
+
+.widget-title {
+    margin: 2px 4px 8px 4px;
+}
+
+.widget-title > label {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.widget-title > button {
+    background: @surface2;
+    color: @text;
+    border: 1px solid @border;
+    border-radius: 6px;
+    padding: 5px 9px;
+}
+
+.widget-title > button:hover {
+    background: @accent;
+    border-color: @accent;
+    color: #ffffff;
+}
+
+.widget-dnd {
+    background: @surface;
+    border: 1px solid @border;
+    border-radius: 6px;
+    margin: 0 4px 8px 4px;
+    padding: 8px 10px;
+}
+
+.widget-dnd > switch {
+    background: @surface2;
+    border-radius: 999px;
+}
+
+.widget-dnd > switch:checked {
+    background: @accent;
+}
+
+.widget-dnd > switch slider {
+    background: @text;
+    border-radius: 999px;
+}
