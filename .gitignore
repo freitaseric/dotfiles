@@ -1,0 +1,22 @@
+# Backups and local state
+*.bak
+*.backup
+*.old
+*.swp
+*~
+.DS_Store
+
+# Secrets and credentials
+*.key
+*.pem
+.env
+.env.*
+!.env.example
+id_*
+credentials*
+tokens*
+
+# Browser/shell/application state must never live here
+.mozilla/
+.cache/
+.local/share/fish/fish_history
